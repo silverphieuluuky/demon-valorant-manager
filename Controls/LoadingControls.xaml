@@ -1,0 +1,177 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Modern Progress Bar Style -->
+    <Style x:Key="ModernProgressBarStyle" TargetType="ProgressBar">
+        <Setter Property="Background" Value="#FFE2E8F0"/>
+        <Setter Property="Foreground" Value="#00BFFF"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Height" Value="8"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ProgressBar">
+                    <Border x:Name="border" 
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            CornerRadius="4">
+                        <Grid>
+                            <Border x:Name="PART_Track" 
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="4"/>
+                            <Border x:Name="PART_Indicator" 
+                                    Background="{TemplateBinding Foreground}"
+                                    CornerRadius="4"
+                                    HorizontalAlignment="Left">
+                                <Border.RenderTransform>
+                                    <ScaleTransform x:Name="IndicatorTransform" 
+                                                  ScaleX="0" 
+                                                  CenterX="0" 
+                                                  CenterY="0"/>
+                                </Border.RenderTransform>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsIndeterminate" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimation Storyboard.TargetName="PART_Indicator"
+                                                       Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                       From="0" To="1" Duration="0:0:1.5"
+                                                       AutoReverse="True"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Value}" Value="0">
+                            <Setter TargetName="PART_Indicator" Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Spinner Control -->
+    <Style x:Key="SpinnerStyle" TargetType="Control">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Control">
+                    <Border x:Name="border" 
+                            Width="40" 
+                            Height="40"
+                            Background="Transparent">
+                        <Ellipse x:Name="spinner"
+                               Stroke="#00BFFF"
+                               StrokeThickness="3"
+                               Fill="Transparent">
+                            <Ellipse.RenderTransform>
+                                <RotateTransform x:Name="SpinnerTransform" 
+                                               CenterX="20" 
+                                               CenterY="20" 
+                                               Angle="0"/>
+                            </Ellipse.RenderTransform>
+                        </Ellipse>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsVisible" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimation Storyboard.TargetName="SpinnerTransform"
+                                                       Storyboard.TargetProperty="Angle"
+                                                       From="0" To="360" Duration="0:0:1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Loading Overlay -->
+    <Style x:Key="LoadingOverlayStyle" TargetType="Border">
+        <Setter Property="Background" Value="#80000000"/>
+    </Style>
+
+    <!-- Pulse Animation -->
+    <Style x:Key="PulseAnimationStyle" TargetType="FrameworkElement">
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="1" 
+                              ScaleY="1" 
+                              CenterX="0.5" 
+                              CenterY="0.5"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsVisible" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard RepeatBehavior="Forever">
+                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                           From="1" To="1.1" Duration="0:0:0.6"
+                                           AutoReverse="True"/>
+                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                           From="1" To="1.1" Duration="0:0:0.6"
+                                           AutoReverse="True"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Shimmer Loading Effect -->
+    <Style x:Key="ShimmerStyle" TargetType="Border">
+        <Setter Property="Background" Value="#FFE2E8F0"/>
+    </Style>
+
+    <!-- Loading Button Style -->
+    <Style x:Key="LoadingButtonStyle" TargetType="Button" BasedOn="{StaticResource ModernButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" 
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="8"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                        <Grid>
+                            <ContentPresenter x:Name="contentPresenter"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Margin="{TemplateBinding Padding}"/>
+                            <StackPanel x:Name="loadingPanel"
+                                      Orientation="Horizontal"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Visibility="Collapsed">
+                                <Control Style="{StaticResource SpinnerStyle}" 
+                                        Width="16" 
+                                        Height="16" 
+                                        Margin="0,0,8,0"/>
+                                <TextBlock Text="Loading..." 
+                                         VerticalAlignment="Center"
+                                         FontSize="12"
+                                         Foreground="White"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Tag}" Value="Loading">
+                            <Setter TargetName="contentPresenter" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="loadingPanel" Property="Visibility" Value="Visible"/>
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary> 

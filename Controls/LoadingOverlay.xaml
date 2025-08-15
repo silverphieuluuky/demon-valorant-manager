@@ -1,0 +1,105 @@
+<UserControl x:Class="RiotAutoLogin.Controls.LoadingOverlay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <!-- Loading Animation -->
+        <Storyboard x:Key="LoadingAnimation" RepeatBehavior="Forever">
+            <DoubleAnimation Storyboard.TargetName="RotatingElement"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                           From="0" To="360" Duration="0:0:2"/>
+        </Storyboard>
+        
+        <!-- Pulse Animation -->
+        <Storyboard x:Key="PulseAnimation" RepeatBehavior="Forever">
+            <DoubleAnimation Storyboard.TargetName="PulseElement"
+                           Storyboard.TargetProperty="Opacity"
+                           From="0.3" To="1.0" Duration="0:0:1.5" AutoReverse="True"/>
+        </Storyboard>
+    </UserControl.Resources>
+    
+    <Grid x:Name="OverlayGrid" Background="#80000000" Visibility="Collapsed">
+        <Border Background="{StaticResource SurfaceColor}" 
+                CornerRadius="12" 
+                Padding="32"
+                MaxWidth="400"
+                MaxHeight="300"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+            
+            <StackPanel>
+                <!-- Loading Icon -->
+                <Border x:Name="RotatingElement" 
+                        Width="64" Height="64" 
+                        Background="{StaticResource NeonGradient}"
+                        CornerRadius="32"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,24">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#00BFFF" BlurRadius="15" ShadowDepth="0" Opacity="0.8"/>
+                    </Border.Effect>
+                    <Border.RenderTransform>
+                        <RotateTransform CenterX="32" CenterY="32"/>
+                    </Border.RenderTransform>
+                    
+                    <Path Data="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"
+                          Fill="White" 
+                          Stretch="Uniform"
+                          Margin="16"/>
+                </Border>
+                
+                <!-- Loading Text -->
+                <TextBlock x:Name="LoadingText" 
+                          Text="Loading..." 
+                          FontSize="18" 
+                          FontWeight="SemiBold"
+                          Foreground="{StaticResource PrimaryColorBright}"
+                          HorizontalAlignment="Center"
+                          Margin="0,0,0,16">
+                    <TextBlock.Effect>
+                        <DropShadowEffect Color="#00BFFF" BlurRadius="5" ShadowDepth="0" Opacity="0.6"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+                
+                <!-- Progress Bar -->
+                <ProgressBar x:Name="ProgressBar"
+                           Height="4"
+                           Background="{StaticResource SurfaceColorLight}"
+                           Foreground="{StaticResource NeonGradient}"
+                           Margin="0,0,0,16"
+                           Visibility="Collapsed">
+                    <ProgressBar.Effect>
+                        <DropShadowEffect Color="#00BFFF" BlurRadius="3" ShadowDepth="0" Opacity="0.4"/>
+                    </ProgressBar.Effect>
+                </ProgressBar>
+                
+                <!-- Progress Text -->
+                <TextBlock x:Name="ProgressText"
+                          Text="0%"
+                          FontSize="14"
+                          Foreground="{StaticResource TextSecondaryColor}"
+                          HorizontalAlignment="Center"
+                          Visibility="Collapsed"/>
+                
+                <!-- Cancel Button -->
+                <Button x:Name="CancelButton"
+                       Content="Cancel"
+                       Style="{StaticResource SecondaryButton}"
+                       Margin="0,16,0,0"
+                       Visibility="Collapsed"
+                       Click="CancelButton_Click"/>
+            </StackPanel>
+        </Border>
+        
+        <!-- Background Pulse Effect -->
+        <Border x:Name="PulseElement"
+                Background="{StaticResource PrimaryColor}"
+                Opacity="0.1"
+                CornerRadius="12"
+                Margin="8"/>
+    </Grid>
+</UserControl> 
